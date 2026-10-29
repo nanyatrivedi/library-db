@@ -1,11 +1,11 @@
 # library_db
 
-A ready-made library database with six tables and sample rows. Use it as your starting database.
+A PostgreSQL library database with six tables and sample rows. Use it as your starting database.
 
-| File | Use it with |
+| File | Use it for |
 |---|---|
-| `library_db.sqlite` | DB Browser for SQLite (open the file directly, no setup) |
-| `library_db.sql` | PostgreSQL (pgAdmin). Run it once in a fresh, empty database |
+| `library_db.sql` | Plain SQL script. Run it in pgAdmin to build the database. |
+| `library_db.dump` | PostgreSQL custom-format dump. Restore it with pg_restore. |
 
 ## Tables and row counts
 
@@ -18,16 +18,17 @@ A ready-made library database with six tables and sample rows. Use it as your st
 | reservations | 3 |
 | fines | 3 |
 
-## Open in DB Browser for SQLite
+## Load in pgAdmin (recommended)
 
-1. Download `library_db.sqlite`.
-2. Open DB Browser for SQLite, then File, then Open Database, then pick the file.
-3. Browse Data shows the rows. Execute SQL lets you change them.
-
-## Load in PostgreSQL (pgAdmin)
-
-1. Create a new, empty database (right-click Databases, Create, Database).
+1. Create a new, empty database (right-click Databases, Create, Database), for example `library_db`.
 2. Open the Query Tool on it and open `library_db.sql`.
-3. Press Run once. Rerunning on the same database fails with `relation "categories" already exists`, so drop the database and recreate it to start over.
+3. Press Run once.
 
-The two files hold the same data. The SQLite file uses `INTEGER PRIMARY KEY AUTOINCREMENT` in place of `SERIAL`, since SQLite has no `SERIAL`.
+Running the script twice on the same database fails with `relation "categories" already exists`. To start over, drop the database and recreate it.
+
+## Restore the dump (optional)
+
+```bash
+createdb library_db
+pg_restore --no-owner -d library_db library_db.dump
+```
